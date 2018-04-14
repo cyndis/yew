@@ -138,6 +138,14 @@ impl<'a, CTX: 'static, COMP: Component<CTX>> Env<'a, CTX, COMP> {
         };
         closure.into()
     }
+
+    /// Sends a message to be processed on the next cycle.
+    ///
+    /// This can be used to queue an action to occur only after a
+    /// DOM update, when the action requires the DOM to have refreshed.
+    pub fn send_message(&mut self, message: COMP::Msg) {
+        self.sender.send(ComponentUpdate::Message(message));
+    }
 }
 
 /// This type holds a reference to a context instance and
